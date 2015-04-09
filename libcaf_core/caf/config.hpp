@@ -111,10 +111,14 @@
 #  define CAF_BSD
 #elif defined(WIN32) || defined(_WIN32)
 #  define CAF_WINDOWS
+#elif defined(_AIX)
+#  define CAF_AIX
+#elif defined(HPUX)
+#  define CAF_HPUX
 #else
 #  error Platform and/or compiler not supportet
 #endif
-#if defined(CAF_MACOS) || defined(CAF_LINUX) || defined(CAF_BSD)
+#if defined(CAF_MACOS) || defined(CAF_LINUX) || defined(CAF_BSD) || defined(CAF_AIX) || defined(CAF_HPUX)
 #  define CAF_POSIX
 #endif
 
@@ -124,7 +128,7 @@
 // import backtrace and backtrace_symbols_fd into caf::detail
 #ifndef CAF_ENABLE_RUNTIME_CHECKS
 # define CAF_REQUIRE(unused) static_cast<void>(0)
-#elif defined(CAF_WINDOWS) || defined(CAF_BSD)
+#elif defined(CAF_WINDOWS) || defined(CAF_BSD) || defined(CAF_AIX) || defined(CAF_HPUX) 
 # define CAF_REQUIRE(stmt)                                                     \
   if (static_cast<bool>(stmt) == false) {                                      \
     printf("%s:%u: requirement failed '%s'\n", __FILE__, __LINE__, #stmt);     \
